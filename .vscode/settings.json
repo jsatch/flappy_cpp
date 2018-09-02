@@ -1,6 +1,10 @@
 {
     "files.associations": {
-        "stack": "cpp",
-        "bitset": "cpp"
-    }
-}
+      "stack": "cpp",
+      "bitset": "cpp",
+      "__config": "cpp",
+      "__nullptr": "cpp"
+    },
+    "editor.detectIndentation": true,
+    "C_Cpp.dimInactiveRegions": false
+  }

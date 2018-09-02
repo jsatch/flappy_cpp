@@ -6,22 +6,24 @@ ScreenManager::ScreenManager()
 }
 void ScreenManager::render(SDL_Renderer *ren)
 {
-    
+    this->pila->top()->render(ren);
 }
 void ScreenManager::push(Screen *screen)
 {
-    this->pila->push(screen)
+    this->pila->push(screen);
 }
 void ScreenManager::pop()
 {
-    this->pila->pop()->dispose();
+    Screen* screen = this->pila->top();
+    screen->dispose();
+    this->pila->pop();
 }
 void ScreenManager::set(Screen *screen)
 {
+    this->pop();
+    this->push(screen);
 }
 void ScreenManager::update(float dt)
 {
-}
-void ScreenManager::render(SDL_Renderer *ren)
-{
+    this->pila->top()->update(dt);
 }

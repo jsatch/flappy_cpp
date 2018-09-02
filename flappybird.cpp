@@ -1,14 +1,26 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
+#include <stack>
+#ifndef SDL2_H
+    #define SDL2_H
+    #include <SDL2/SDL.h>
+    #include <SDL2_image/SDL_image.h>
+#endif
+#ifndef SCREEN_H
+  #define SCREEN_H
+  #include "screen.h"
+#endif
+#ifndef SCREEN_MENU_H
+    #define SCREEN_MENU_H
+    #include "screen_menu.h"
+#endif
 
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    /*if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         cout << "SDL_Init Error" << SDL_GetError() << endl;
         return 1;
@@ -31,7 +43,17 @@ int main(int argc, char const *argv[])
         cout << "SDL_CreateRenderer Error" << SDL_GetError() << endl;
         SDL_Quit();
         return 1;
-    }
+    }*/
+    stack<Screen*> pantallas;
+    ScreenMenu* sc1 = new ScreenMenu(nullptr);
+    ScreenMenu* sc2 = new ScreenMenu(nullptr); 
+    pantallas.push(sc1);
+    pantallas.push(sc2);
+
+    cout << "Tam:" << pantallas.size() << endl;
+
+
+
 
     
     return 0;
