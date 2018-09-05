@@ -1,11 +1,32 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
+#include <stack>
+#ifndef SDL2_H
+#define SDL2_H
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
+#endif
+#ifndef SCREEN_H
+#define SCREEN_H
+#include "screen.h"
+#endif
+#ifndef SCREEN_MENU_H
+#define SCREEN_MENU_H
+#include "screen_menu.h"
+#endif
+
 #define FPS 60
 
 using namespace std;
+
+void calculate_frame_rate(Uint32 starting_tick)
+{
+    if ((1000 / FPS) > SDL_GetTicks() - starting_tick)
+    {
+        SDL_Delay((1000 / FPS) - (SDL_GetTicks() - starting_tick));
+    }
+}
 
 int main(int argc, char const *argv[])
 {
@@ -16,7 +37,7 @@ int main(int argc, char const *argv[])
     }
 
     // Creamos una ventana
-    SDL_Window *win = SDL_CreateWindow("Prueba", 100,100, 1024, 800, SDL_WINDOW_SHOWN);
+    SDL_Window *win = SDL_CreateWindow("Prueba", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, 1024, 800, SDL_WINDOW_SHOWN);
     if (win == nullptr){
         cout << "SDL_CreateWindow Error" << SDL_GetError() << endl;
         SDL_Quit();
@@ -33,42 +54,44 @@ int main(int argc, char const *argv[])
         SDL_Quit();
         return 1;
     }
+    /*stack<Screen *> pantallas;
+    ScreenMenu *sc1 = new ScreenMenu(nullptr);
+    ScreenMenu *sc2 = new ScreenMenu(nullptr);
+    pantallas.push(sc1);
+    pantallas.push(sc2);
 
-    SDL_Surface *screen = SDL_GetWindowSurface(win);
-    if (screen == nullptr)
-    {
-        SDL_FreeSurface(screen);
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(win);
-        cout << "SDL_CreateRenderer Error" << SDL_GetError() << endl;
-        SDL_Quit();
-        return 1;
-    }
+    cout << "Tam:" << pantallas.size() << endl;*/
+
+    ScreenManager *manager = new ScreenManager();
+    ScreenMenu *sc1 = new ScreenMenu(manager);
+    manager->push(sc1);
+
+
 
     bool running = true;
     SDL_Event event;
     Uint32 starting_tick;
-    while(running)
+    while (running)
     {
         starting_tick = SDL_GetTicks();
         while (SDL_PollEvent(&event))
         {
-            switch(event.type)
+            if (event.type == SDL_QUIT)
             {
-                case SDL_QUIT:
-                    SDL_FreeSurface(screen);
-                    SDL_DestroyRenderer(ren);
-                    SDL_DestroyWindow(win);
-                    SDL_Quit();
+                running = false;
                 break;
             }
         }
-        if (1000 / FPS > SDL_GetTicks() - starting_tick)
-        {
-            SDL_Delay((1000 / FPS) - SDL_GetTicks() - starting_tick);
-        }
+        manager->update(0);
+        manager->render(ren);
+
+        calculate_frame_rate(starting_tick);
     }
 
-    
+    SDL_DestroyRenderer(ren);
+    delete &event;
+    SDL_DestroyWindow(win);
+    SDL_Quit();
+
     return 0;
 }
