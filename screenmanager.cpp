@@ -23,7 +23,7 @@ void ScreenManager::set(Screen *screen)
     this->pop();
     this->push(screen);
 }
-void ScreenManager::update(float dt)
+void ScreenManager::update(Uint32 dt)
 {
     this->pila->top()->update(dt);
 }

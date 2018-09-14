@@ -1,18 +1,63 @@
 #include "screen_menu.h"
 
-ScreenMenu::ScreenMenu(ScreenManager *manager) :Screen(manager)
+ScreenMenu::ScreenMenu(ScreenManager *manager, SDL_Renderer* ren) :Screen(manager)
 {
+    SDL_GetRendererOutputSize(ren, &this->width, &this->height);
+
+    SDL_Surface* surBackground = IMG_Load("resources/bg.png");
+    if (surBackground == nullptr){
+        cout << "IMG_Load Background Error" << SDL_GetError() << endl;
+        return;
+    }
+    SDL_Texture* texBg = SDL_CreateTextureFromSurface(ren, surBackground);
+    SDL_FreeSurface(surBackground);
+
+    if (texBg == nullptr){
+        cout << "SDL_CreateTextureFromSurface Background Error" << SDL_GetError() << endl;
+        return;
+    }
+
+    SDL_Surface* surButton = IMG_Load("resources/button_play.png");
+    if (surButton == nullptr){
+        cout << "IMG_Load Button Play Error" << SDL_GetError() << endl;
+        return;
+    }
+    this->sprButton = new Sprite(
+        (this->width / 2) - (surButton->clip_rect.w / 2),
+        (this->height / 2) - (surButton->clip_rect.h / 2),
+        surButton->clip_rect.w,
+        surButton->clip_rect.h);
+    SDL_Texture* texButton = SDL_CreateTextureFromSurface(ren, surButton);
+    SDL_FreeSurface(surButton);
+    
+    if (texButton == nullptr){
+        cout << "SDL_CreateTextureFromSurface Button Error" << SDL_GetError() << endl;
+        return;
+    }
+    this->sprButton->set_texture(texButton);
+
+
+    this->sprBackground = new Sprite(0,0, this->width, this->height);
+    this->sprBackground->set_texture(texBg);
+    
 }
 
 void ScreenMenu::handleInput(SDL_Event* event)
 {
 }
-void ScreenMenu::update(float dt)
+void ScreenMenu::update(Uint32 dt)
 {
+
 }
 void ScreenMenu::render(SDL_Renderer* ren)
 {
-    int w_total, h_total;
+    SDL_RenderClear(ren);
+    SDL_RenderCopy(ren, this->sprBackground->get_texture(), NULL, this->sprBackground->get_rect());
+    SDL_RenderCopy(ren, this->sprButton->get_texture(), NULL, this->sprButton->get_rect());
+    SDL_RenderPresent(ren);
+
+
+    /*int w_total, h_total;
 
     // Para obtener el tamano de la pantalla
     SDL_GetRendererOutputSize(ren, &w_total, &h_total);
@@ -39,7 +84,7 @@ void ScreenMenu::render(SDL_Renderer* ren)
     
     
     SDL_RenderCopy(ren, texture, NULL, &dest_rec);
-    SDL_RenderPresent(ren);
+    SDL_RenderPresent(ren);*/
 
 }
 void ScreenMenu::dispose()

@@ -14,7 +14,7 @@ public:
     void push(Screen *screen);
     void pop();
     void set(Screen *screen);
-    void update(float dt);
+    void update(Uint32 dt);
     void handle_input(SDL_Event* event);
 private:
     stack<Screen*> *pila;

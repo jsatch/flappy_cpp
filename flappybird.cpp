@@ -1,12 +1,6 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
-#include <stack>
-#ifndef SDL2_H
-#define SDL2_H
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#endif
 #ifndef SCREEN_H
 #define SCREEN_H
 #include "screen.h"
@@ -37,7 +31,7 @@ int main(int argc, char const *argv[])
     }
 
     // Creamos una ventana
-    SDL_Window *win = SDL_CreateWindow("Prueba", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, 1024, 800, SDL_WINDOW_SHOWN);
+    SDL_Window *win = SDL_CreateWindow("Prueba", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, 144, 256, SDL_WINDOW_SHOWN);
     if (win == nullptr){
         cout << "SDL_CreateWindow Error" << SDL_GetError() << endl;
         SDL_Quit();
@@ -63,7 +57,7 @@ int main(int argc, char const *argv[])
     cout << "Tam:" << pantallas.size() << endl;*/
 
     ScreenManager *manager = new ScreenManager();
-    ScreenMenu *sc1 = new ScreenMenu(manager);
+    ScreenMenu *sc1 = new ScreenMenu(manager, ren);
     manager->push(sc1);
 
 
@@ -82,14 +76,14 @@ int main(int argc, char const *argv[])
                 break;
             }
         }
-        manager->update(0);
+        manager->update(SDL_GetTicks() - starting_tick);
         manager->render(ren);
 
         calculate_frame_rate(starting_tick);
     }
+    cout << "Saliendo..." << endl;
 
     SDL_DestroyRenderer(ren);
-    delete &event;
     SDL_DestroyWindow(win);
     SDL_Quit();
 
