@@ -19,22 +19,20 @@
     #include <SDL2/SDL.h>
     #include <SDL2_image/SDL_image.h>
 #endif
-#ifndef SCREEN_PLAY_H
-    #define SCREEN_PLAY_H
-    #include "screen_play.h"
-#endif
 
 using namespace std;
 
-
-class ScreenMenu : public Screen
+class ScreenPlay : public Screen
 {
     private:
-        Sprite *sprBackground;
-        Sprite *sprButton;
-        int width, height;
+        const int TUBE_SPACING = 50;
+        const int TUBE_COUNT = 4;
+        const int TUBE_WIDTH = 26;
+        const int GROUND_OFFSET = -40;
+        Sprite* sprBackground;
+        Sprite* sprGround;
     public:
-        ScreenMenu(ScreenManager* manager, SDL_Renderer* ren);
+        ScreenPlay(ScreenManager* manager, SDL_Renderer* ren);
         void handleInput(SDL_Event* event) override;
         void update(Uint32 dt) override;
         void render() override;

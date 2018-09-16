@@ -6,8 +6,8 @@ CXXFLAGS = -Wall -std=c++11
 LDFLAGS = $(SDL) $(SDL_IMAGE)
 EXE = flappybird
 
-output: flappybird.cpp screenmanager.o screen.o screen_menu.o sprites.o
-	$(CXX) flappybird.cpp screenmanager.o screen.o screen_menu.cpp sprites.o $(LDFLAGS) $(CXXFLAGS)  -o $(EXE)
+output: flappybird.cpp screenmanager.o screen.o screen_menu.o sprites.o screen_play.o
+	$(CXX) flappybird.cpp screenmanager.o screen.o screen_menu.cpp sprites.o screen_play.o $(LDFLAGS) $(CXXFLAGS)  -o $(EXE)
 
 screen.o: screen.h screen.cpp
 	$(CXX) -c screen.cpp $(CXXFLAGS) $(LDFLAGS)
@@ -20,6 +20,9 @@ screen_menu.o: screen_menu.h screen_menu.cpp
 
 sprites.o: sprites.h sprites.cpp
 	$(CXX) -c sprites.cpp  $(CXXFLAGS) $(LDFLAGS)
+
+screen_play.o: screen_play.h screen_play.cpp
+	$(CXX) -c screen_play.cpp  $(CXXFLAGS) $(LDFLAGS)
 
 clean:
 	rm *.o  $(EXE)

@@ -1,6 +1,6 @@
 #include "screen_menu.h"
 
-ScreenMenu::ScreenMenu(ScreenManager *manager, SDL_Renderer* ren) :Screen(manager)
+ScreenMenu::ScreenMenu(ScreenManager *manager, SDL_Renderer* ren) :Screen(manager, ren)
 {
     SDL_GetRendererOutputSize(ren, &this->width, &this->height);
 
@@ -44,12 +44,18 @@ ScreenMenu::ScreenMenu(ScreenManager *manager, SDL_Renderer* ren) :Screen(manage
 
 void ScreenMenu::handleInput(SDL_Event* event)
 {
+    if (event->type == SDL_MOUSEBUTTONDOWN)
+    {
+        cout << "Evento SDL_MOUSEBUTTONDOWN" << endl;
+        ScreenPlay* screen = new ScreenPlay(this->manager, this->ren);
+        this->manager->push(screen);
+    }
 }
 void ScreenMenu::update(Uint32 dt)
 {
 
 }
-void ScreenMenu::render(SDL_Renderer* ren)
+void ScreenMenu::render()
 {
     SDL_RenderClear(ren);
     SDL_RenderCopy(ren, this->sprBackground->get_texture(), NULL, this->sprBackground->get_rect());

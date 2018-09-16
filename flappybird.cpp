@@ -76,6 +76,7 @@ int main(int argc, char const *argv[])
                 break;
             }
         }
+        manager->handle_input(&event);
         manager->update(SDL_GetTicks() - starting_tick);
         manager->render(ren);
 

@@ -6,7 +6,7 @@ ScreenManager::ScreenManager()
 }
 void ScreenManager::render(SDL_Renderer *ren)
 {
-    this->pila->top()->render(ren);
+    this->pila->top()->render();
 }
 void ScreenManager::push(Screen *screen)
 {
